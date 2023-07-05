@@ -1,18 +1,30 @@
-﻿Console.Write("Player 1, how far away from the city do you want to station the Manticore?: ");
-int p1Distance = Convert.ToInt32(Console.ReadLine());
-while ( p1Distance < 0 || p1Distance > 100)
-{
-    Console.Write("Please select a range between 0 and 100: ");
-    p1Distance = Convert.ToInt32(Console.ReadLine());
-}
+﻿UserInput("Player 1, how far away from the city do you want to station the Manticore?: ", 0, 100);
 Console.Clear();
-
 Console.WriteLine("Player 2, it is your turn.");
+int p1Distance;
 int manticore = 10;
 int city = 15;
 int round = 1;
 int cannonRange;
-int cannonDamage = 1;
+int cannonDamage ;
+while ( manticore > 0  || city > 0)
+{
+    Console.WriteLine($"STATUS: Round: {round} City {city}/15 Manticore: {manticore}/10");
+    CannonDamage();
+    CannonRange();
+    round++;
+    if( manticore <= 0)
+    {
+        Console.WriteLine("The Manticore has been destroyed! The city of Consolas has been saved!");
+        break;
+    }
+    else if (city <= 0)
+    {
+        Console.WriteLine("The city has been destroyed! YOU FAILED!!!");
+        break;
+    }   
+}
+//Methods
 int CannonDamage()
 {
     if (round % 3 == 0 && round % 5 == 0)
@@ -41,36 +53,31 @@ int CannonRange()
     if (cannonRange == p1Distance)
     {
         Console.WriteLine("That round was a DIRECT HIT !");
-        round++;
+
         manticore = manticore - cannonDamage;
     }
     if (cannonRange > p1Distance)
     {
         Console.WriteLine("That round OVERSHOT the target.");
         city--;
-        round++;
     }
     else if (cannonRange < p1Distance)
     {
         Console.WriteLine("That round FELL SHORT of that target.");
         city--;
-        round++;
+
     }
     return cannonRange;
 }
-while ( manticore > 0  || city > 0)
+
+int UserInput(string text, int min, int max)
 {
-    Console.WriteLine($"STATUS: Round: {round} City {city}/15 Manticore: {manticore}/10");
-    CannonDamage();
-    CannonRange();
-    if( manticore <= 0)
+    Console.Write(text);
+    p1Distance = Convert.ToInt32(Console.ReadLine());
+    while (p1Distance < min || p1Distance > max)
     {
-        Console.WriteLine("The Manticore has been destroyed! The city of Consolas has been saved!");
-        break;
+        Console.Write("Please select a range between 0 and 100: ");
+        p1Distance = Convert.ToInt32(Console.ReadLine());
     }
-    else if (city <= 0)
-    {
-        Console.WriteLine("The city has been destroyed! YOU FAILED!!!");
-        break;
-    }   
+    return p1Distance;
 }
