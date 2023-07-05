@@ -9,6 +9,7 @@ int cannonRange;
 int cannonDamage ;
 while ( manticore > 0  || city > 0)
 {
+    Console.WriteLine("---------------------------------------------------------------------");
     Console.WriteLine($"STATUS: Round: {round} City {city}/15 Manticore: {manticore}/10");
     CannonDamage();
     CannonRange();
@@ -52,17 +53,21 @@ int CannonRange()
     cannonRange = Convert.ToInt32(Console.ReadLine());
     if (cannonRange == p1Distance)
     {
+        Console.Beep();
+        Console.ForegroundColor = ConsoleColor.Yellow;
         Console.WriteLine("That round was a DIRECT HIT !");
 
         manticore = manticore - cannonDamage;
     }
     if (cannonRange > p1Distance)
     {
+        Console.ForegroundColor = ConsoleColor.Blue;
         Console.WriteLine("That round OVERSHOT the target.");
         city--;
     }
     else if (cannonRange < p1Distance)
     {
+        Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine("That round FELL SHORT of that target.");
         city--;
 
