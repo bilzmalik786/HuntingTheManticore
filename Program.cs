@@ -58,7 +58,7 @@ void GetCannonDamage()
 void GetCannonRange()
 {
     Console.Write("Enter desired cannon range: ");
-    cannonRange = Convert.ToInt32(Console.ReadLine());
+    cannonRange = GetInput();
     if (cannonRange == p1Distance)
     {
         Console.Beep();
