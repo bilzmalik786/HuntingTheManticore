@@ -1,29 +1,49 @@
-﻿Console.Write("Player 1, how far away from the city do you want to station the Manticore?: ");
-int p1Distance = Convert.ToInt32(Console.ReadLine());
-while ( p1Distance < 0 || p1Distance > 100)
-{
-    Console.Write("Please select a range between 0 and 100: ");
-    p1Distance = Convert.ToInt32(Console.ReadLine());
-}
+﻿// Player 1 inputing the manticore distance
+GetManticoreDistance("Player 1, how far away from the city do you want to station the Manticore?: ", 0, 100);
 Console.Clear();
 
 Console.WriteLine("Player 2, it is your turn.");
+
+//Variables
+int p1Distance;
 int manticore = 10;
 int city = 15;
 int round = 1;
 int cannonRange;
-int cannonDamage = 1;
-int CannonDamage()
+int cannonDamage;
+
+while (manticore > 0 || city > 0)
+{
+    Console.ForegroundColor = ConsoleColor.Gray;
+    Console.WriteLine("---------------------------------------------------------------------");
+    Console.WriteLine($"STATUS: Round: {round} City {city}/15 Manticore: {manticore}/10");
+    GetCannonDamage();
+    GetCannonRange();
+    round++;
+    city--;
+    if (manticore <= 0)
+    {
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        Console.WriteLine("The Manticore has been destroyed! The city of Consolas has been saved!");
+        break;
+    }
+    else if (city <= 0)
+    {
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine("The city has been destroyed! YOU FAILED!!!");
+        break;
+    }
+}
+//Methods
+
+// Getting the damage of the cannon depending on the round
+void GetCannonDamage()
 {
     if (round % 3 == 0 && round % 5 == 0)
     {
         cannonDamage = 10;
     }
-    else if (round % 3 == 0)
-    {
-        cannonDamage = 3;
-    }
-    else if (round % 5 == 0)
+    else if (round % 3 == 0 || round % 5 == 0)
     {
         cannonDamage = 3;
     }
@@ -32,45 +52,48 @@ int CannonDamage()
         cannonDamage = 1;
     }
     Console.WriteLine($"The cannon is expected to deal {cannonDamage} damage this round.");
-    return cannonDamage;
 }
-int CannonRange()
+
+// Getting the range of the cannon
+void GetCannonRange()
 {
     Console.Write("Enter desired cannon range: ");
     cannonRange = Convert.ToInt32(Console.ReadLine());
     if (cannonRange == p1Distance)
     {
+        Console.Beep();
+        Console.ForegroundColor = ConsoleColor.Yellow;
         Console.WriteLine("That round was a DIRECT HIT !");
-        round++;
-        manticore = manticore - cannonDamage;
+
+        manticore -= cannonDamage;
     }
     if (cannonRange > p1Distance)
     {
+        Console.ForegroundColor = ConsoleColor.Blue;
         Console.WriteLine("That round OVERSHOT the target.");
-        city--;
-        round++;
+
     }
     else if (cannonRange < p1Distance)
     {
+        Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine("That round FELL SHORT of that target.");
-        city--;
-        round++;
+
+
     }
-    return cannonRange;
 }
-while ( manticore > 0  || city > 0)
+// Player 1 getting the distance of the manticore and making sure input is between the min and max value
+void GetManticoreDistance(string text, int min, int max)
 {
-    Console.WriteLine($"STATUS: Round: {round} City {city}/15 Manticore: {manticore}/10");
-    CannonDamage();
-    CannonRange();
-    if( manticore <= 0)
+    Console.Write(text);
+    p1Distance = GetInput();
+    while (p1Distance < min || p1Distance > max)
     {
-        Console.WriteLine("The Manticore has been destroyed! The city of Consolas has been saved!");
-        break;
+        Console.Write("Please select a range between 0 and 100: ");
+        p1Distance = Convert.ToInt32(Console.ReadLine());
     }
-    else if (city <= 0)
-    {
-        Console.WriteLine("The city has been destroyed! YOU FAILED!!!");
-        break;
-    }   
+}
+// Getting user input
+int GetInput()
+{
+    return Convert.ToInt32(Console.ReadLine());
 }
